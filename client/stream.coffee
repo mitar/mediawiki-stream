@@ -17,10 +17,7 @@ Tracker.autorun ->
 
 Template.body.helpers
   endpoint: ->
-    # If URL starts with HTTP, we make sure to match capitalization.
-    # Otherwise we use lower case "ws" prefix. This works with https
-    # as well, converting it into wss.
-    Meteor.absoluteUrl('websocket').replace(/^HTTP/, 'WS').replace(/^http/i, 'ws')
+    Meteor.absoluteUrl()
 
 Template.apiExplorer.helpers
   disconnected: ->
