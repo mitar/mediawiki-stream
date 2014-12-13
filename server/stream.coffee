@@ -27,6 +27,22 @@ Meteor.startup ->
     # Set receive (and expiry) timestamp to the current time.
     data._ts = new Date()
 
+    if data.type is 'new'
+      # TODO: How to get data for new pages?
+
+    else if data.type is 'edit'
+      response = HTTP.get "#{ data.server_url }#{ data.server_script_path }/api.php",
+        forever: true # Enable keep-alive.
+        params:
+          format: 'json'
+          action: 'compare'
+          fromrev: data.revision.old
+          torev: data.revision.new
+        headers:
+         'User-Agent': 'WikiMedia Meteor DDP stream (http://wikimedia.meteor.com/, mitar.wikimediastream@tnode.com)'
+
+      data.compare = response.data.compare
+
     Stream.insert data
 
   socket.on 'error', (error) ->
