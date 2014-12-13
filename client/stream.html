@@ -1,0 +1,86 @@
+<head>
+  <title>WikiMedia recent changes DDP API</title>
+</head>
+
+<body>
+  <a href="https://github.com/mitar/mediawiki-stream"><img class="github-source" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+  <h1>WikiMedia recent changes DDP API</h1>
+  <p>
+    This site provides a <a href="https://www.meteor.com/">Meteor</a>
+    <a href="https://github.com/meteor/meteor/blob/devel/packages/ddp/DDP.md">DDP</a> API to the
+    <a href="https://wikitech.wikimedia.org/wiki/RCStream">stream of recent
+    changes on all WikiMedia wikis</a> (of which <a href="https://www.wikipedia.org/">Wikipedia</a> is the most known).
+    Use <a href="http://docs.meteor.com/#/full/ddp_connect"><code>DDP.connect</code></a> to connect to the
+    <code>{{endpoint}}</code> endpoint and subscribe to the <code>mediawiki-stream</code> publish
+    endpoint. The publish endpoint accepts the following arguments:
+  </p>
+  <dl>
+    <dt><code>selector</code></dt>
+    <dd><a href="http://docs.mongodb.org/manual/tutorial/query-documents/">MongoDB selector</a> to filter the documents.</dd>
+    <dt><code>fields</code> (optional, default <code>{}</code>)</dt>
+    <dd><a href="http://docs.mongodb.org/manual/tutorial/project-fields-from-query-results/">MongoDB fields</a> specification
+    to include or exclude fields.</dd>
+    <dt><code>includeCached</code> (optional, default <code>false</code>)</dt>
+    <dd>
+      Normally, publish endpoint is sending only documents for changes made after the subscription time,
+      in real-time, as new changes are made.
+      If <code>includeCached</code> is set to <code>true</code>, the publish endpoint will send first all
+      matched documents from the internal cache of recent changes.
+    </dd>
+  </dl>
+  <p>
+    The publish endpoint is only adding documents to the <code>mediawiki_stream</code> collection, it never
+    removes them. Be careful about the size of your local collection to which your subscription is storing
+    the documents. Unsubscribe and resubscribe to reset the local collection.
+  </p>
+  <p>
+    If you are not using Meteor to connect to the DDP API, there are <a href="http://www.meteorpedia.com/read/DDP_Clients">various
+    DDP clients</a> you can use instead.
+  </p>
+  {{> apiExplorer}}
+</body>
+
+<template name="apiExplorer">
+  <h2>API explorer</h2>
+  {{#if disconnected}}
+    <p class="error">Not connected to the server. <button type="button" class="reconnect">Reconnect</button></p>
+  {{/if}}
+  <form class="api-explorer-form">
+    <h3>Selector</h3>
+    <textarea class="selector">{{selectorString}}</textarea>
+    {{#if selectorError}}
+      <p class="error">{{selectorError}}</p>
+    {{else}}
+      {{> renderjson selectorObject}}
+    {{/if}}
+    <h3>Fields</h3>
+    <textarea class="fields">{{fieldsString}}</textarea>
+    {{#if fieldsError}}
+      <p class="error">{{fieldsError}}</p>
+    {{else}}
+      {{> renderjson fieldsObject}}
+    {{/if}}
+    <button type="submit" class="submit">Submit</button>
+  </form>
+  <h3>Results</h3>
+  {{#if subscriptionError}}
+    <p class="error">{{subscriptionError}}</p>
+  {{/if}}
+  {{> apiResults}}
+</template>
+
+<template name="apiResults">
+  {{#each results}}
+    {{> apiResultsItem}}
+  {{/each}}
+</template>
+
+<template name="apiResultsItem">
+  <div class="api-results-item">
+    {{> renderjson}}
+  </div>
+</template>
+
+<template name="renderjson">
+  <div class="renderjson"></div>
+</template>
