@@ -6,6 +6,29 @@ Stream._ensureIndex
 ,
   expireAfterSeconds: STREAM_TTL
 
+mediawikiAPI = (url, params) ->
+  response = HTTP.get url,
+    forever: true # Enable keep-alive.
+    params: params
+    headers:
+     'User-Agent': "WikiMedia Meteor DDP stream (#{ Meteor.absoluteUrl() }, mitar.wikimediastream@tnode.com)"
+
+  data = response.data
+
+  if data.error
+    if _.isObject data.error
+      error = util.inspect data.error, false, null
+    else
+      error = data.error
+    throw new Error "API Error: #{ url }, #{ util.inspect params, false, null }, #{ error }"
+
+  console.warn data.warnings if data.warnings
+
+  data
+
+handleException = (error) ->
+  console.error "Exception in stream change processing: #{ error.stack or error }"
+
 Meteor.startup ->
   # Connect to WikiMedia stream.
   # TODO: Are there other streams for other MediaWiki installations? Should this be configurable?
@@ -22,28 +45,44 @@ Meteor.startup ->
     console.log "Stream disconnected"
 
   socket.on 'change', Meteor.bindEnvironment (data) ->
-    # TODO: Do we want to fetch also change data itself?
+    # Store receive (and expiry) timestamp.
+    timestamp = new Date()
 
-    # Set receive (and expiry) timestamp to the current time.
-    data._ts = new Date()
+    try
 
-    if data.type is 'new'
-      # TODO: How to get data for new pages?
+      if data.type is 'new'
+        responseData = mediawikiAPI "#{ data.server_url }#{ data.server_script_path }/api.php",
+          format: 'json'
+          action: 'query'
+          prop: 'revisions'
+          revids: data.revision.new
+          rvprop: 'content'
+          continue: ''
 
-    else if data.type is 'edit'
-      response = HTTP.get "#{ data.server_url }#{ data.server_script_path }/api.php",
-        forever: true # Enable keep-alive.
-        params:
+        # It should be only one result, so nothing to continue ever.
+        assert not responseData.continue, "Continue for revids #{ data.revision.new }"
+
+        data.query = responseData.query
+
+      else if data.type is 'edit'
+        responseData = mediawikiAPI "#{ data.server_url }#{ data.server_script_path }/api.php",
           format: 'json'
           action: 'compare'
           fromrev: data.revision.old
           torev: data.revision.new
-        headers:
-         'User-Agent': 'WikiMedia Meteor DDP stream (http://wikimedia.meteor.com/, mitar.wikimediastream@tnode.com)'
 
-      data.compare = response.data.compare
+        data.compare = responseData.compare
+
+    catch error
+      console.error "Exception in fetching API data for #{ util.inspect data, false, null }: #{ error.stack or error }"
+
+    # Set receive (and expiry) timestamp. We do it last so that it is the last in the object.
+    # It just looks a bit better when printing the objects out.
+    data._ts = timestamp
 
     Stream.insert data
+  ,
+    handleException
 
   socket.on 'error', (error) ->
     console.log "Stream error", error
