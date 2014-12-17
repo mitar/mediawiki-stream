@@ -6,6 +6,23 @@ Stream._ensureIndex
 ,
   expireAfterSeconds: STREAM_TTL
 
+Stream._ensureIndex
+  wiki: 1
+
+Stream._ensureIndex
+  timestamp: 1
+
+Stream._ensureIndex
+  id: 1
+
+Stream._ensureIndex
+  wiki: 1
+  timestamp: 1
+  id: 1
+  'log_params.log': 1
+,
+  unique: true
+
 mediawikiAPI = (url, params) ->
   response = HTTP.get url,
     forever: true # Enable keep-alive.
@@ -80,7 +97,11 @@ Meteor.startup ->
     # It just looks a bit better when printing the objects out.
     data._ts = timestamp
 
-    Stream.insert data
+    try
+      Stream.insert data
+    catch error
+      return if /E11000 duplicate key error index:.*mediawiki_stream\.\$wiki_1_timestamp_1_id_1_log_params\.log_1/.test error.err
+      throw error
   ,
     handleException
 
