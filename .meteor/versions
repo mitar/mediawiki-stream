@@ -37,6 +37,8 @@ observe-sequence@1.0.3
 ordered-dict@1.0.1
 peerlibrary:assert@0.2.5
 peerlibrary:util@0.2.3
+percolate:momentum@0.7.0
+percolate:velocityjs@1.1.0
 random@1.0.1
 reactive-dict@1.0.4
 reactive-var@1.0.3

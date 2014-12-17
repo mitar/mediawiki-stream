@@ -12,4 +12,5 @@ socket-io-client
 dandv:http-more
 peerlibrary:assert
 peerlibrary:util
+percolate:momentum
 

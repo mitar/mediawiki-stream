@@ -76,11 +76,15 @@
 </template>
 
 <template name="apiResultsItem">
-  <div class="api-results-item">
-    {{> renderjson}}
+  <div class="api-results-item-wrapper">
+    {{#momentum plugin='keep-visible'}}
+      <div class="api-results-item">
+        {{> renderjson}}
+      </div>
+    {{/momentum}}
   </div>
 </template>
 
 <template name="renderjson">
-  <div class="renderjson"></div>
+  <div class="renderjson-wrapper"></div>
 </template>
