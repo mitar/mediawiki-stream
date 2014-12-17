@@ -1,3 +1,5 @@
+@LocalStream = new Meteor.Collection null
+
 # We use setDefault so that values are kept between hot reloads.
 Session.setDefault 'selectorString', "{wiki: 'enwiki', bot: false, minor: false}"
 Session.setDefault 'selectorObject', {wiki: 'enwiki', bot: false, minor: false}
@@ -8,6 +10,23 @@ Session.setDefault 'fieldsObject', {}
 # We do not have ti initialize subscriptionError because it is initialized in autorun.
 Session.set 'selectorError', null
 Session.set 'fieldsError', null
+
+# We copy documents from the stream to the local collection.
+Stream.find({}).observeChanges
+  'added': (id, fields) ->
+    LocalStream.insert _.extend {_id: id}, fields
+
+# Regularly expire old documents from the local collection.
+Meteor.setInterval ->
+  LocalStream.find({},
+    sort: [
+      ['_ts', 'desc']
+    ]
+    skip: 50
+  ).forEach (document) ->
+    LocalStream.remove document._id
+,
+  5000 # ms
 
 Tracker.autorun ->
   Session.set 'subscriptionError', null
@@ -87,10 +106,11 @@ Template.apiExplorer.events
 
 Template.apiResults.helpers
   results: ->
-    Stream.find {},
+    LocalStream.find {},
       sort: [
         ['_ts', 'desc']
       ]
+      limit: 50
 
 Template.renderjson.rendered = ->
   @autorun =>

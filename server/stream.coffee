@@ -111,7 +111,10 @@ Meteor.publish 'mediawiki-stream', (selector, fields, includeCached) ->
 
   handle = Stream.find(selector, fields: fields).observeChanges
     added: (id, fields) =>
-      @added 'mediawiki_stream', id, fields if includeCached or not initializing
+      if includeCached or not initializing
+        # We add and immediately remove the document.
+        @added 'mediawiki_stream', id, fields
+        @removed 'mediawiki_stream', id
 
   initializing = false
 

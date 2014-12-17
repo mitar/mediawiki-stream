@@ -29,9 +29,9 @@
     </dd>
   </dl>
   <p>
-    The publish endpoint is only adding documents to the <code>mediawiki_stream</code> collection, it never
-    removes them. Be careful about the size of your local collection to which your subscription is storing
-    the documents. Unsubscribe and resubscribe to reset the local collection.
+    The publish endpoint adds to and immediately removes documents from the <code>mediawiki_stream</code> collection.
+    If you want to retain documents on the client side, only observe adding of documents and copy them to a local
+    collection. Be careful about the size of your local collection, though. It can grow fast.
   </p>
   <p>
     If you are not using Meteor to connect to the DDP API, there are <a href="http://www.meteorpedia.com/read/DDP_Clients">various
