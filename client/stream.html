@@ -1,5 +1,6 @@
 <head>
   <title>WikiMedia recent changes DDP API</title>
+  <link rel="stylesheet" href="//bits.wikimedia.org/en.wikipedia.org/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.action.history.diff&amp;only=styles&amp;skin=vector&amp;*" />
 </head>
 
 <body>
@@ -80,6 +81,15 @@
     {{#momentum plugin='keep-visible'}}
       <div class="api-results-item">
         {{> renderjson}}
+        <table class="diff">
+          <colgroup>
+            <col class="diff-marker">
+            <col class="diff-content">
+            <col class="diff-marker">
+            <col class="diff-content">
+          </colgroup>
+          {{{diff}}}
+        </table>
       </div>
     {{/momentum}}
   </div>

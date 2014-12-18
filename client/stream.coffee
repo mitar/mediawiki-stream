@@ -112,6 +112,10 @@ Template.apiResults.helpers
       ]
       limit: 50
 
+Template.apiResultsItem.helpers
+  diff: ->
+    Template.currentData()?.compare?['*']
+
 Template.renderjson.rendered = ->
   @autorun =>
     @$('.renderjson-wrapper').empty().append renderjson.set_icons('+', '-').set_show_to_level(2) EJSON.toJSONValue Template.currentData()
