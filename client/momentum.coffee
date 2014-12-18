@@ -20,10 +20,6 @@ Momentum.registerPlugin 'keep-visible', (options) ->
       $(window).scrollTop $(window).scrollTop() + (newNodeHeight - nodeHeight)
     done()
 
-  moveElement: (node, next, done) ->
-    next.parentNode.insertBefore node, next
-    done()
-
   removeElement: (node, done) ->
     node.parentNode.removeChild node
     done()
