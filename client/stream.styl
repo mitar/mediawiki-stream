@@ -1,3 +1,5 @@
+@import nib
+
 .selector
 .fields
 .submit
@@ -30,9 +32,15 @@
   /* We make only one side with a margin so that top and bottom margins of
      consecutive items do not collapse and confuse computation of how much
      to scroll in keep-visible momentum plugin. */
-  margin 1em auto 0 auto
+  margin 0 auto 1em auto
 
 .renderjson
+  /* During animation Velocity sets overflow to hidden which makes the margin
+     not collapse with the results heading margin above. So the results item
+     temporary jumps down, before being return back once the animation finishes.
+     The solution is to simply remove the top margin so that there is no collapsing. */
+  margin-top 0
+
   a
     text-decoration none
 
