@@ -71,27 +71,25 @@
 </template>
 
 <template name="apiResults">
-  {{#each results}}
-    {{> apiResultsItem}}
-  {{/each}}
+  {{#momentum plugin='keep-visible'}}
+    {{#each results}}
+      {{> apiResultsItem}}
+    {{/each}}
+  {{/momentum}}
 </template>
 
 <template name="apiResultsItem">
-  <div class="api-results-item-wrapper">
-    {{#momentum plugin='keep-visible'}}
-      <div class="api-results-item">
-        {{> renderjson}}
-        <table class="diff">
-          <colgroup>
-            <col class="diff-marker">
-            <col class="diff-content">
-            <col class="diff-marker">
-            <col class="diff-content">
-          </colgroup>
-          {{{diff}}}
-        </table>
-      </div>
-    {{/momentum}}
+  <div class="api-results-item">
+    {{> renderjson}}
+    <table class="diff">
+      <colgroup>
+        <col class="diff-marker">
+        <col class="diff-content">
+        <col class="diff-marker">
+        <col class="diff-content">
+      </colgroup>
+      {{{diff}}}
+    </table>
   </div>
 </template>
 
