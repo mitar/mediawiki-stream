@@ -71,11 +71,13 @@
 </template>
 
 <template name="apiResults">
-  {{#momentum plugin='keep-visible'}}
-    {{#each results}}
-      {{> apiResultsItem}}
-    {{/each}}
-  {{/momentum}}
+  <div class="api-results">
+    {{#momentum plugin='keep-visible' selector='.api-results'}}
+      {{#each results}}
+        {{> apiResultsItem}}
+      {{/each}}
+    {{/momentum}}
+  </div>
 </template>
 
 <template name="apiResultsItem">

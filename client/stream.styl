@@ -27,7 +27,10 @@
     opacity 1.0
 
 .api-results-item
-  margin 1em 0
+  /* We make only one side with a margin so that top and bottom margins of
+     consecutive items do not collapse and confuse computation of how much
+     to scroll in keep-visible momentum plugin. */
+  margin 1em auto 0 auto
 
 .renderjson
   a
