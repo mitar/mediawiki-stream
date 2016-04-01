@@ -1,6 +1,6 @@
 [submodule "packages/renderjson/renderjson"]
 	path = packages/renderjson/renderjson
-	url = https://github.com/mitar/renderjson.git
+	url = https://github.com/caldwell/renderjson.git
 [submodule "packages/socket-io-client"]
 	path = packages/socket-io-client
 	url = https://github.com/mitar/socket-io-client.git

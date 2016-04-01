@@ -118,4 +118,4 @@ Template.apiResultsItem.helpers
 
 Template.renderjson.rendered = ->
   @autorun =>
-    @$('.renderjson-wrapper').empty().append renderjson.set_icons('+', '-').set_show_to_level(2) EJSON.toJSONValue Template.currentData()
+    @$('.renderjson-wrapper').empty().append renderjson.set_icons('+', '-').set_show_to_level(2).set_max_string_length(100) EJSON.toJSONValue Template.currentData()
