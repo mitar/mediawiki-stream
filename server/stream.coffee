@@ -1,3 +1,5 @@
+util = require 'util'
+
 STREAM_TTL = 60 # seconds
 
 # Auto-expire messages after STREAM_TTL seconds.
