@@ -102,7 +102,7 @@ Meteor.startup ->
     try
       Stream.insert data
     catch error
-      return if /E11000 duplicate key error index:.*mediawiki_stream\.\$wiki_1_timestamp_1_id_1_log_params\.log_1/.test error.err
+      return if /E11000 duplicate key error.*(index.*mediawiki_stream|mediawiki_stream.*index).*wiki_1_timestamp_1_id_1_log_params\.log_1/.test(error.err or error.errmsg)
       throw error
   ,
     handleException
