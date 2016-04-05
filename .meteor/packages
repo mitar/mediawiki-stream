@@ -28,3 +28,5 @@ check
 standard-minifier-css
 standard-minifier-js
 modules
+peerlibrary:directcollection
+peerlibrary:classy-job
