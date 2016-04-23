@@ -99,11 +99,18 @@ Meteor.startup ->
     # It just looks a bit better when printing the objects out.
     data._ts = timestamp
 
-    try
-      Stream.insert data
-    catch error
-      return if /E11000 duplicate key error.*(index.*mediawiki_stream|mediawiki_stream.*index).*wiki_1_timestamp_1_id_1_log_params\.log_1/.test(error.err or error.errmsg)
-      throw error
+    Stream.upsert
+      $and: [
+        wiki: data.wiki
+      ,
+        timestamp: data.timestamp
+      ,
+        id: data.id
+      ,
+        'log_params.log': data.log_params?.log
+      ]
+    ,
+      $setOnInsert: data
   ,
     handleException
 
