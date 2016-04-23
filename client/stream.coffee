@@ -30,6 +30,9 @@ Meteor.setInterval ->
 
 Tracker.autorun ->
   Session.set 'subscriptionError', null
+
+  # TODO: Always add _ts field to the projection if it would be otherwise not included.
+  #       This is needed for sorting when displaying.
   Meteor.subscribe 'mediawiki-stream', Session.get('selectorObject'), Session.get('fieldsObject'),
     onError: (error) ->
       Session.set 'subscriptionError', "#{ error }"
