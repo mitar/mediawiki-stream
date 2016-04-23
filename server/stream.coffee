@@ -122,17 +122,17 @@ Meteor.startup ->
   socket.on 'reconnect_failed', ->
     console.log "Stream reconnection failed"
 
-Meteor.publish 'mediawiki-stream', (selector, fields, includeCached) ->
+Meteor.publish 'mediawiki-stream', (selector, projectionFields, includeCached) ->
   check selector, Object
-  check fields, Match.Optional Match.OneOf null, Object
+  check projectionFields, Match.Optional Match.OneOf null, Object
   check includeCached, Match.Optional Match.OneOf null, Boolean
 
-  fields ?= {}
+  projectionFields ?= {}
   includeCached ?= false
 
   initializing = true
 
-  handle = Stream.find(selector, fields: fields).observeChanges
+  handle = Stream.find(selector, fields: projectionFields).observeChanges
     added: (id, fields) =>
       if includeCached or not initializing
         # We add and immediately remove the document.
