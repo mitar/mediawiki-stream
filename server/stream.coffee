@@ -51,7 +51,7 @@ handleException = (error) ->
 Meteor.startup ->
   # Connect to WikiMedia stream.
   # TODO: Are there other streams for other MediaWiki installations? Should this be configurable?
-  socket = io.connect 'http://stream.wikimedia.org/rc'
+  socket = io.connect 'https://stream.wikimedia.org/rc'
 
   socket.on 'connect', ->
     console.log "Stream connected"
