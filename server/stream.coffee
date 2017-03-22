@@ -128,9 +128,12 @@ Meteor.publish 'mediawiki-stream', (selector, projectionFields, includeCached) -
   handle = Stream.find(selector, fields: projectionFields).observeChanges
     added: (id, fields) =>
       if includeCached or not initializing
-        # We add and immediately remove the document.
         @added 'mediawiki_stream', id, fields
-        @removed 'mediawiki_stream', id
+    removed: (id) =>
+      # Because we are potentially not including cached documents, we
+      # should check if we have published a document before removing it.
+      stringId = @_idFilter.idStringify id
+      @removed 'mediawiki_stream', id if stringId in @_documents.mediawiki_stream
 
   initializing = false
 
