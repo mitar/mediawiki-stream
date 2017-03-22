@@ -8,7 +8,7 @@ audit-argument-checks@1.0.7
 stylus@2.513.9
 renderjson
 socket-io-client
-dandv:http-more
+http
 peerlibrary:assert
 percolate:momentum
 

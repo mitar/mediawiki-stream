@@ -27,10 +27,11 @@ Stream._ensureIndex
 
 mediawikiAPI = (url, params) ->
   response = HTTP.get url,
-    forever: true # Enable keep-alive.
     params: params
     headers:
      'User-Agent': "WikiMedia Meteor DDP stream (#{ Meteor.absoluteUrl() }, mitar.wikimediastream@tnode.com)"
+    npmRequestOptions:
+      forever: true # Enable keep-alive.
 
   data = response.data
 
