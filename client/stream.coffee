@@ -1,3 +1,5 @@
+renderjson = require 'renderjson'
+
 # We use setDefault so that values are kept between hot reloads.
 Session.setDefault 'selectorString', "{wiki: 'enwiki', bot: false, minor: false}"
 Session.setDefault 'selectorObject', {wiki: 'enwiki', bot: false, minor: false}
