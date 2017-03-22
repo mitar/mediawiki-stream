@@ -1,4 +1,5 @@
 util = require 'util'
+EventSource = require 'eventsource'
 
 STREAM_TTL = 60 # seconds
 
@@ -52,21 +53,20 @@ handleException = (error) ->
 Meteor.startup ->
   # Connect to WikiMedia stream.
   # TODO: Are there other streams for other MediaWiki installations? Should this be configurable?
-  socket = io.connect 'https://stream.wikimedia.org/rc'
+  eventSource = new EventSource('https://stream.wikimedia.org/v2/stream/recentchange');
 
-  socket.on 'connect', ->
+  eventSource.on 'open', (event) ->
     console.log "Stream connected"
 
-    # Subscribe to all wikis.
-    socket.emit 'subscribe', '*'
-
-  socket.on 'disconnect', ->
+  eventSource.on 'error', (event) ->
     # TODO: Do we have to reconnect?
-    console.log "Stream disconnected"
+    console.log "Stream error", event
 
-  socket.on 'change', Meteor.bindEnvironment (data) ->
+  eventSource.on 'message', Meteor.bindEnvironment (event) ->
     # Store receive (and expiry) timestamp.
     timestamp = new Date()
+
+    data = JSON.parse event.data
 
     try
 
@@ -114,21 +114,6 @@ Meteor.startup ->
       $setOnInsert: data
   ,
     handleException
-
-  socket.on 'error', (error) ->
-    console.log "Stream error", error
-
-  socket.on 'reconnect', (args...) ->
-    console.log "Stream reconnection", args...
-
-  socket.on 'reconnecting', (args...) ->
-    console.log "Stream reconnecting", args...
-
-  socket.on 'reconnect_error', (error) ->
-    console.log "Stream reconnect error", error
-
-  socket.on 'reconnect_failed', ->
-    console.log "Stream reconnection failed"
 
 Meteor.publish 'mediawiki-stream', (selector, projectionFields, includeCached) ->
   check selector, Object

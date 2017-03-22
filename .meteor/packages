@@ -7,7 +7,6 @@ coffeescript@1.11.1_4
 audit-argument-checks@1.0.7
 stylus@2.513.9
 renderjson
-socket-io-client
 http
 peerlibrary:assert
 percolate:momentum
