@@ -1,3 +1,5 @@
+JobsWorker.initialize()
+
 # Repeat every 1 day.
 REPEAT_INTERVAL = 24 * 60 * 60 * 1024 # ms
 
@@ -24,4 +26,6 @@ class RepairDatabaseJob extends Job
       repairDatabase: 1
 
 Meteor.startup ->
+  JobsWorker.start()
+
   new RepairDatabaseJob().enqueue() if JobsWorker.options.workerInstances
