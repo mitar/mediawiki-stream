@@ -1,5 +1,5 @@
 {
-  "name": "PeerMind",
+  "name": "mediawiki-stream",
   "private": true,
   "scripts": {
     "start": "meteor run"
