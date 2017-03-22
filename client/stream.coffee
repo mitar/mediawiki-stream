@@ -1,5 +1,9 @@
 renderjson = require 'renderjson'
 
+# We lower max age for DDP batching on the connection, which lowers visual latency.
+# If you want to disable batching fully, set Meteor.connection._bufferedWritesInterval to 0.
+Meteor.connection._bufferedWritesMaxAge = 100
+
 # We use setDefault so that values are kept between hot reloads.
 Session.setDefault 'selectorString', "{wiki: 'enwiki', bot: false, minor: false}"
 Session.setDefault 'selectorObject', {wiki: 'enwiki', bot: false, minor: false}
