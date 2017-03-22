@@ -9,7 +9,7 @@
   <p>
     This site provides a <a href="https://www.meteor.com/">Meteor</a>
     <a href="https://github.com/meteor/meteor/blob/devel/packages/ddp/DDP.md">DDP</a> API to the
-    <a href="https://wikitech.wikimedia.org/wiki/RCStream">stream of recent
+    <a href="https://wikitech.wikimedia.org/wiki/EventStreams">stream of recent
     changes on all WikiMedia wikis</a> (of which <a href="https://www.wikipedia.org/">Wikipedia</a> is the most known).
     Use <a href="http://docs.meteor.com/#/full/ddp_connect"><code>DDP.connect</code></a> to connect to the
     <code>{{endpoint}}</code> endpoint and subscribe to the <code>mediawiki-stream</code> publish
@@ -30,7 +30,8 @@
     </dd>
   </dl>
   <p>
-    The publish endpoint adds to and immediately removes documents from the <code>mediawiki_stream</code> collection.
+    The publish endpoint adds to documents to the <code>mediawiki_stream</code> collection.
+    It removes them after {{STREAM_TTL}} seconds.
     If you want to retain documents on the client side, only observe adding of documents and copy them to a local
     collection. Be careful about the size of your local collection, though. It can grow fast.
   </p>

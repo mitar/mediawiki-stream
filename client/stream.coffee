@@ -24,6 +24,9 @@ Template.body.helpers
   endpoint: ->
     Meteor.absoluteUrl()
 
+  STREAM_TTL: ->
+    __meteor_runtime_config__.STREAM_TTL
+
 Template.apiExplorer.helpers
   disconnected: ->
     not Meteor.status()?.connected

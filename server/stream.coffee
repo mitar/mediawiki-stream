@@ -3,6 +3,8 @@ EventSource = require 'eventsource'
 
 STREAM_TTL = 60 # seconds
 
+__meteor_runtime_config__.STREAM_TTL = STREAM_TTL
+
 # Auto-expire messages after STREAM_TTL seconds.
 Stream._ensureIndex
   _ts: 1
