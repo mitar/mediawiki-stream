@@ -123,17 +123,27 @@ Meteor.publish 'mediawiki-stream', (selector, projectionFields, includeCached) -
   projectionFields ?= {}
   includeCached ?= false
 
+  remove = (id) =>
+    # Because we are potentially not including cached documents, or we are removing an already
+    # removed document, we should check if we are publishing a document before removing it.
+    stringId = @_idFilter.idStringify id
+    @removed 'mediawiki_stream', id if stringId of @_documents.mediawiki_stream
+
   initializing = true
 
   handle = Stream.find(selector, fields: projectionFields).observeChanges
     added: (id, fields) =>
       if includeCached or not initializing
         @added 'mediawiki_stream', id, fields
+
+        # Make sure document is removed after STREAM_TTL seconds. MongoDB does not always expire
+        # documents on time, or observeChanges does not always detect expired documents quickly.
+        Meteor.setTimeout =>
+          remove id
+        ,
+          STREAM_TTL * 1000 # ms
     removed: (id) =>
-      # Because we are potentially not including cached documents, we
-      # should check if we have published a document before removing it.
-      stringId = @_idFilter.idStringify id
-      @removed 'mediawiki_stream', id if stringId in @_documents.mediawiki_stream
+      remove id
 
   initializing = false
 
