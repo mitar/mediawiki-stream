@@ -38,10 +38,10 @@ mediawikiAPI = (url, params) ->
 
   if data.error
     if _.isObject data.error
-      error = util.inspect data.error, false, null
+      error = util.inspect data.error, showHidden: false, depth: null
     else
       error = data.error
-    throw new Error "API Error: #{ url }, #{ util.inspect params, false, null }, #{ error }"
+    throw new Error "API Error: #{ url }, #{ util.inspect params, showHidden: false, depth: null }, #{ error }"
 
   console.warn data.warnings if data.warnings
 
@@ -94,7 +94,7 @@ Meteor.startup ->
         data.compare = responseData.compare
 
     catch error
-      console.error "Exception in fetching API data for #{ util.inspect data, false, null }: #{ error.stack or error }"
+      console.error "Exception in fetching API data for #{ util.inspect data, showHidden: false, depth: null }: #{ error.stack or error }"
 
     # Set receive (and expiry) timestamp. We do it last so that it is the last in the object.
     # It just looks a bit better when printing the objects out.
