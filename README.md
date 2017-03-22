@@ -6,6 +6,6 @@ in a [Meteor](https://www.meteor.com/) application (or [any other application su
 you can instead connect to the [`https://wikimedia.meteorapp.com/`](https://wikimedia.meteorapp.com/) DDP endpoint
 and subscribe to the publish endpoint which publishes those recent changes. The advantage is that you can filter to only
 those changes you care about using MongoDB selectors, and project only fields you want. Moreover, changes of adding
-or editing wiki content are augmented with the information about the change itself, e.g., a diff of changes.
+or editing wiki content are augmented with the information about the change itself, e.g., a diff of the change.
 
 See [`https://wikimedia.meteorapp.com/`](https://wikimedia.meteorapp.com/) for more information and documentation.
