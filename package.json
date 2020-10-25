@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "@babel/runtime": "^7.12.1",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "eventsource": "^0.2.2",

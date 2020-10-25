@@ -1,6 +1,6 @@
 <head>
   <title>WikiMedia recent changes DDP API</title>
-  <link rel="stylesheet" href="//en.wikipedia.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.action.history.diff&amp;only=styles&amp;skin=vector&amp;*" />
+  <link rel="stylesheet" href="//www.mediawiki.org/w/load.php?modules=mediawiki.diff.styles&only=styles">
 </head>
 
 <body>
@@ -91,7 +91,9 @@
         <col class="diff-marker">
         <col class="diff-content">
       </colgroup>
-      {{{diff}}}
+      <tbody>
+        {{{diff}}}
+      </tbody>
     </table>
   </div>
 </template>

@@ -79,6 +79,7 @@ Meteor.startup ->
           prop: 'revisions'
           revids: data.revision.new
           rvprop: 'content'
+          rvslots: '*'
           continue: ''
 
         # It should be only one result, so nothing to continue ever.
@@ -101,6 +102,9 @@ Meteor.startup ->
     # Set receive (and expiry) timestamp. We do it last so that it is the last in the object.
     # It just looks a bit better when printing the objects out.
     data._ts = timestamp
+
+    # We remove $schema because it cannot be stored in MongoDB.
+    delete data.$schema
 
     Stream.upsert
       $and: [
@@ -129,7 +133,7 @@ Meteor.publish 'mediawiki-stream', (selector, projectionFields, includeCached) -
     # Because we are potentially not including cached documents, or we are removing an already
     # removed document, we should check if we are publishing a document before removing it.
     stringId = @_idFilter.idStringify id
-    @removed 'mediawiki_stream', id if stringId of @_documents.mediawiki_stream
+    @removed 'mediawiki_stream', id if @_documents.get('mediawiki_stream').has(stringId)
 
   initializing = true
 
