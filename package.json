@@ -5,11 +5,11 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.1",
-    "babel-runtime": "^6.18.0",
-    "bcrypt": "^0.8.7",
-    "eventsource": "^0.2.2",
-    "meteor-node-stubs": "^0.2.3",
-    "renderjson": "^1.2.3"
+    "@babel/runtime": "~7.12.1",
+    "babel-runtime": "~6.26.0",
+    "bcrypt": "~5.0.0",
+    "eventsource": "~1.0.7",
+    "meteor-node-stubs": "~0.3.2",
+    "renderjson": "~1.4.0"
   }
 }
