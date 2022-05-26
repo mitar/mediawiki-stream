@@ -8,7 +8,7 @@
     "@babel/runtime": "~7.12.1",
     "babel-runtime": "~6.26.0",
     "bcrypt": "~5.0.0",
-    "eventsource": "~1.0.7",
+    "eventsource": "~2.0.2",
     "meteor-node-stubs": "~0.3.2",
     "renderjson": "~1.4.0"
   }
